@@ -1,0 +1,42 @@
+import math 
+ 
+# Input plaintext and key 
+plaintext = "transposition technique using python" 
+key = 8 
+ 
+# Create a list of empty strings to store ciphertext 
+ciphertext = [''] * key 
+ 
+# Encryption: Fill ciphertext column-wise 
+for colum in range(key): 
+    pointer = colum 
+    while pointer < len(plaintext): 
+        ciphertext[colum] += plaintext[pointer] 
+        pointer += key 
+ 
+# Join ciphertext to form the encrypted message 
+cipher = ''.join(ciphertext) 
+print("Cipher Text:", cipher) 
+ 
+# Decryption: Calculate number of columns and rows 
+nC = math.ceil(len(cipher) / key) 
+nR = key 
+numOfShadedBoxes = (nC * nR) - len(cipher) 
+ 
+# Create a list to store the plaintext 
+pt = [''] * nC 
+col = 0 
+row = 0 
+ 
+# Decrypt by filling the columns 
+for sym in cipher: 
+    pt[col] += sym 
+    col += 1 
+    # Reset column and move to next row if needed 
+    if (col == nC) or (col == nC - 1 and row >= nR - numOfShadedBoxes): 
+        col = 0 
+        row += 1 
+ 
+# Join to get the original plaintext 
+print("Decrypted Text:", ''.join(pt))
+

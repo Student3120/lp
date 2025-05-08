@@ -1,0 +1,65 @@
+# N-Queen Problem using Backtracking 
+ 
+# A utility function to print the solution 
+def printSolution(board): 
+    for i in range(len(board)): 
+        for j in range(len(board)): 
+            print(board[i][j], end=" ") 
+        print() 
+ 
+# A utility function to check if a queen can be placed safely 
+def isSafe(board, row, col): 
+    # Check this row on the left side 
+    for i in range(col): 
+        if board[row][i] == 1: 
+            return False 
+ 
+    # Check the upper diagonal on the left side 
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)): 
+        if board[i][j] == 1: 
+            return False 
+ 
+    # Check the lower diagonal on the left side 
+    for i, j in zip(range(row, len(board), 1), range(col, -1, -1)): 
+        if board[i][j] == 1: 
+            return False 
+ 
+    return True 
+ 
+# A recursive utility function to solve the N-Queens problem 
+def solveNQUtil(board, col): 
+    # If all queens are placed, return true 
+    if col >= len(board): 
+        return True 
+ 
+    # Try placing a queen in all rows of this column 
+    for i in range(len(board)): 
+        if isSafe(board, i, col): 
+            board[i][col] = 1 
+ 
+            # Recur to place the next queen 
+            if solveNQUtil(board, col + 1) == True: 
+                return True 
+ 
+            # If placing queen does not lead to a solution, backtrack 
+            board[i][col] = 0 
+ 
+    return False 
+ 
+# This function solves the N-Queens problem using Backtracking 
+def solveNQ(): 
+    board = [ 
+        [0, 0, 0, 0], 
+        [0, 0, 0, 0], 
+        [0, 0, 0, 0], 
+        [0, 0, 0, 0] 
+    ] 
+    if solveNQUtil(board, 0) == False: 
+        print("Solution does not exist") 
+        return False 
+ 
+    printSolution(board) 
+    return True 
+ 
+# Driver program to test the above function 
+solveNQ()

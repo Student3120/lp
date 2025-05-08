@@ -1,0 +1,25 @@
+# Input string 
+s = "HelloWorld" 
+ 
+# Apply XOR with 127 to each character and print ASCII values 
+print("XOR Result (ASCII values):") 
+xor_result_ascii = [ord(c) ^ 127 for c in s] 
+print(xor_result_ascii) 
+ 
+# Convert XOR result to readable form (replace non-printable with '?') 
+print("\nXOR Result (Printable Characters):") 
+xor_result_printable = ''.join(
+    c if 32 <= ord(c) <= 126 else '?' 
+    for c in ''.join(chr(val) for val in xor_result_ascii)
+) 
+print(xor_result_printable) 
+ 
+# Show XOR result in hexadecimal format 
+print("\nXOR Result in Hex:") 
+xor_result_hex = ' '.join(hex(val) for val in xor_result_ascii) 
+print(xor_result_hex) 
+ 
+# Apply AND with 127 to each character and print the result 
+print("\nAND Result:") 
+and_result = ''.join(chr(ord(c) & 127) for c in s) 
+print(and_result)

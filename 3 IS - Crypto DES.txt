@@ -1,0 +1,29 @@
+from Crypto.Cipher import DES 
+
+# pip install pycryptodome 
+# Function to pad text to be a multiple of 8 bytes 
+def pad(text): 
+    n = len(text) % 8 
+    if n != 0: 
+        text += b' ' * (8 - n)  # Add padding to make it multiple of 8 
+    return text 
+ 
+# DES key (8 bytes long) 
+key = b'hello123'  # Must be exactly 8 bytes 
+ 
+# Plaintext to encrypt 
+text1 = b'Python is the Best Language!' 
+ 
+# Create a DES object in ECB mode 
+des = DES.new(key, DES.MODE_ECB) 
+ 
+# Pad the text to be a multiple of 8 bytes 
+padded_text = pad(text1) 
+ 
+# Encrypt the padded text 
+encrypted_text = des.encrypt(padded_text) 
+print(f"Encrypted Text: {encrypted_text}") 
+ 
+# Decrypt the text 
+decrypted_text = des.decrypt(encrypted_text).rstrip(b' ')  # Remove padding after decryption 
+print(f"Decrypted Text: {decrypted_text.decode('utf-8')}")

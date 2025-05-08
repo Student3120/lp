@@ -1,0 +1,90 @@
+import heapq 
+ 
+class Graph: 
+    def __init__(self, graph_dict=None): 
+        if graph_dict is None: 
+            graph_dict = {} 
+        self.graph_dict = graph_dict 
+ 
+    # Get neighbors of a node 
+    def get_neighbors(self, v): 
+        return self.graph_dict[v] 
+ 
+    # Heuristic function (static value in this case) 
+    def h(self, n): 
+        H = { 
+            'A': 1, 
+            'B': 2, 
+            'C': 3, 
+            'D': 4 
+        } 
+        return H[n] 
+ 
+    # A* Algorithm implementation 
+    def a_star_algorithm(self, start, goal): 
+        open_list = set([start]) 
+        closed_list = set([]) 
+ 
+        g = {} 
+        g[start] = 0 
+        parents = {} 
+        parents[start] = start 
+ 
+        while len(open_list) > 0: 
+            n = None 
+ 
+            for v in open_list: 
+                if n is None or g[v] + self.h(v) < g[n] + self.h(n): 
+                    n = v 
+ 
+            if n is None: 
+                print('Path does not exist!') 
+                return None 
+ 
+            if n == goal: 
+                path = [] 
+                while parents[n] != n: 
+                    path.append(n) 
+                    n = parents[n] 
+                path.append(start) 
+                path.reverse() 
+                print('Path found: {}'.format(path)) 
+                return path 
+ 
+            for (m, weight) in self.get_neighbors(n): 
+                # If the current node isn't in both open_list and closed_list 
+                # Add it to open_list and note n as its parent 
+                if m not in open_list and m not in closed_list: 
+                    open_list.add(m) 
+                    parents[m] = n 
+                    g[m] = g[n] + weight 
+ 
+                # Otherwise, check if it's quicker to first visit n, then m 
+                # and if it is, update parent data and g data 
+                # and if the node was in the closed_list, move it to open_list 
+                else: 
+                    if g[m] > g[n] + weight: 
+                        g[m] = g[n] + weight 
+                        parents[m] = n 
+                        if m in closed_list: 
+                            closed_list.remove(m) 
+                            open_list.add(m) 
+ 
+            # Remove n from the open_list and add it to closed_list 
+            # because all of its neighbors were inspected 
+            open_list.remove(n) 
+            closed_list.add(n) 
+ 
+        print('Path does not exist!') 
+        return None 
+ 
+# Define the graph 
+adjacency_list = { 
+    'A': [('B', 1), ('C', 3), ('D', 7)], 
+    'B': [('D', 5)], 
+    'C': [('D', 12)], 
+    'D': [] 
+} 
+ 
+graph1 = Graph(adjacency_list) 
+graph1.a_star_algorithm('A', 'D')
